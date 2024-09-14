@@ -1,4 +1,4 @@
-package YOURSSU.assignment.config;
+package YOURSSU.assignment.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
