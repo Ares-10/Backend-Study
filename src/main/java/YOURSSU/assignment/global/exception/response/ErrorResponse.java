@@ -4,10 +4,8 @@ import java.time.LocalDateTime;
 
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import lombok.Getter;
-import lombok.Setter;
 
 @Getter
-@Setter
 public class ErrorResponse {
     private LocalDateTime time;
     private String status;
