@@ -1,8 +1,6 @@
 package YOURSSU.assignment.global.exception;
 
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
 
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -26,49 +24,23 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {GlobalException.class})
     protected ResponseEntity<ErrorResponse> handleGlobalException(
             GlobalException e, HttpServletRequest request) {
-        log.error("{}: {}", e.getGlobalErrorCode(), e.getMessage());
+        //        log.error("{}: {}", e.getGlobalErrorCode(), e.getMessage());
         ErrorResponse errorResponse =
                 new ErrorResponse(e.getGlobalErrorCode(), request.getRequestURI());
         return new ResponseEntity<>(errorResponse, e.getGlobalErrorCode().getHttpStatus());
     }
 
-    @ExceptionHandler
-    public ResponseEntity<Object> validation(ConstraintViolationException e, WebRequest request) {
-        String errorMessage =
-                e.getConstraintViolations().stream()
-                        .map(ConstraintViolation::getMessage)
-                        .findFirst()
-                        .orElseThrow(
-                                () ->
-                                        new RuntimeException(
-                                                "ConstraintViolationException 추출 도중 에러 발생"));
-        return handleExceptionInternalConstraint(
-                e, GlobalErrorCode.valueOf(errorMessage), HttpHeaders.EMPTY, request);
-    }
-
+    // DTO 수준 예외 처리 핸들러
     @Override
-    public ResponseEntity<Object> handleMethodArgumentNotValid(
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException e,
             HttpHeaders headers,
             HttpStatusCode status,
             WebRequest request) {
-
         String requestURI = request.getDescription(false).substring(4);
         String message = e.getBindingResult().getFieldErrors().getFirst().getDefaultMessage();
         //        log.error("{}: {}", HttpStatus.BAD_REQUEST, message);
         ErrorResponse body = new ErrorResponse(HttpStatus.BAD_REQUEST.name(), message, requestURI);
-
         return super.handleExceptionInternal(e, body, headers, HttpStatus.BAD_REQUEST, request);
-    }
-
-    private ResponseEntity<Object> handleExceptionInternalConstraint(
-            Exception e,
-            GlobalErrorCode errorCommonStatus,
-            HttpHeaders headers,
-            WebRequest request) {
-        String requestURI = request.getDescription(false).substring(4);
-        ErrorResponse body = new ErrorResponse(errorCommonStatus, requestURI);
-        return super.handleExceptionInternal(
-                e, body, headers, errorCommonStatus.getHttpStatus(), request);
     }
 }
