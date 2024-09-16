@@ -16,4 +16,15 @@ public class ArticleResponse {
         private String title;
         private String content;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class ArticleUpdateResponse {
+        private Long articleId;
+        private String email;
+        private String title;
+        private String content;
+    }
 }

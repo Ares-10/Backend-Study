@@ -3,7 +3,7 @@ package YOURSSU.assignment.converter;
 import YOURSSU.assignment.domain.Article;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.ArticleRequest.ArticleCreateRequest;
-import YOURSSU.assignment.dto.response.ArticleResponse.ArticleCreateResponse;
+import YOURSSU.assignment.dto.response.ArticleResponse.*;
 
 public class ArticleConverter {
     public static Article toArticle(ArticleCreateRequest request, User user) {
@@ -19,6 +19,15 @@ public class ArticleConverter {
 
     public static ArticleCreateResponse toArticleCreateResponse(Article article, String email) {
         return ArticleCreateResponse.builder()
+                .articleId(article.getId())
+                .email(email)
+                .title(article.getTitle())
+                .content(article.getContent())
+                .build();
+    }
+
+    public static ArticleUpdateResponse toArticleUpdateResponse(Article article, String email) {
+        return ArticleUpdateResponse.builder()
                 .articleId(article.getId())
                 .email(email)
                 .title(article.getTitle())
