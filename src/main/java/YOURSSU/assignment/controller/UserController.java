@@ -27,4 +27,10 @@ public class UserController {
         UserSignUpResponse response = userService.signUp(request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
+
+    @Operation(summary = "회원탈퇴")
+    @DeleteMapping("/withdraw")
+    public void withdraw(@Valid @RequestBody UserWithdrawRequest request) {
+        userService.withdraw(request);
+    }
 }

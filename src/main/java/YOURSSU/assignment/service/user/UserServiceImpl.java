@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import YOURSSU.assignment.converter.UserConverter;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.UserRequest.UserSignUpRequest;
+import YOURSSU.assignment.dto.request.UserRequest.UserWithdrawRequest;
 import YOURSSU.assignment.dto.response.UserResponse.UserSignUpResponse;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
@@ -39,5 +40,11 @@ public class UserServiceImpl implements UserService {
         if (!user.getPassword().equals(password))
             throw new GlobalException(GlobalErrorCode.EMAIL_PASSWORD_MISMATCH);
         return user;
+    }
+
+    @Override
+    public void withdraw(UserWithdrawRequest request) {
+        User user = getUser(request.getEmail(), request.getPassword());
+        userRepository.delete(user);
     }
 }
