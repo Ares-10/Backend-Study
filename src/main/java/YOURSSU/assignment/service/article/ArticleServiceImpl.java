@@ -21,9 +21,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     // 유저 권한 검증 메서드
     private void checkUserAccess(User user, Article article) {
-        if (!user.getId().equals(article.getUser().getId())) {
+        if (!user.getId().equals(article.getUser().getId()))
             throw new GlobalException(GlobalErrorCode.ARTICLE_ACCESS_DENIED);
-        }
     }
 
     public Article getArticle(Long id) {
