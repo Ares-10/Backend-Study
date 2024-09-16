@@ -2,6 +2,7 @@ package YOURSSU.assignment.service.user;
 
 import org.springframework.stereotype.Service;
 
+import YOURSSU.assignment.converter.UserConverter;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.UserRequest.UserSignUpRequest;
 import YOURSSU.assignment.dto.response.UserResponse.UserSignUpResponse;
@@ -23,16 +24,20 @@ public class UserServiceImpl implements UserService {
                         user -> {
                             throw new GlobalException(GlobalErrorCode.USER_ALREADY_EXISTS);
                         });
-        User user =
-                User.builder()
-                        .email(request.getEmail())
-                        .password(request.getPassword()) // 암호화 필요
-                        .username(request.getUsername())
-                        .build();
+        String password = request.getPassword(); // 암호화 필요
+        User user = UserConverter.toUser(request, password);
         userRepository.save(user);
-        return UserSignUpResponse.builder()
-                .email(user.getEmail())
-                .username(user.getUsername())
-                .build();
+        return UserConverter.toUserSignUpResponse(user);
+    }
+
+    @Override
+    public User getUser(String email, String password) {
+        User user =
+                userRepository
+                        .findByEmail(email)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        if (!user.getPassword().equals(password))
+            throw new GlobalException(GlobalErrorCode.EMAIL_PASSWORD_MISMATCH);
+        return user;
     }
 }

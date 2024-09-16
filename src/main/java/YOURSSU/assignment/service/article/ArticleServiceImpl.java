@@ -2,6 +2,7 @@ package YOURSSU.assignment.service.article;
 
 import org.springframework.stereotype.Service;
 
+import YOURSSU.assignment.converter.ArticleConverter;
 import YOURSSU.assignment.domain.Article;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.ArticleRequest.ArticleCreateRequest;
@@ -19,17 +20,8 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     public ArticleCreateResponse createArticle(ArticleCreateRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
-
-        Article article =
-                Article.builder().title(request.getTitle()).content(request.getContent()).build();
-        article.setUser(user);
+        Article article = ArticleConverter.toArticle(request, user);
         articleRepository.save(article);
-
-        return ArticleCreateResponse.builder()
-                .articleId(article.getId())
-                .email(user.getEmail())
-                .title(article.getTitle())
-                .content(article.getContent())
-                .build();
+        return ArticleConverter.toArticleCreateResponse(article, user.getEmail());
     }
 }
