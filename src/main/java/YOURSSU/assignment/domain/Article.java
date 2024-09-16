@@ -27,4 +27,10 @@ public class Article extends BaseEntity {
     @Builder.Default
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
+
+    // ==연관관계 메서드==//
+    public void setUser(User user) {
+        user.getArticles().add(this);
+        this.user = user;
+    }
 }

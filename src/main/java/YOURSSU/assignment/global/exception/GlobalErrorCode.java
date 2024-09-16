@@ -16,7 +16,10 @@ public enum GlobalErrorCode {
 
     // 유저 관련
     USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 존재하는 사용자입니다"),
-    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다");
+    USER_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 사용자를 찾을 수 없습니다"),
+
+    // 이메일과 비밀번호가 일치하지 않는 경우
+    EMAIL_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "이메일에 대한 비밀번호가 일치하지 않습니다");
 
     private final HttpStatus httpStatus;
     private final String message;
