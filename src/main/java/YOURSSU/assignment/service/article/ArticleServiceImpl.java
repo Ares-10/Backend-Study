@@ -43,8 +43,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request) {
-        Article article = getArticle(id);
         User user = userService.getUser(request.getEmail(), request.getPassword());
+        Article article = getArticle(id);
         checkUserAccess(user, article);
         article.update(request.getTitle(), request.getContent());
         articleRepository.save(article);
@@ -53,8 +53,8 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public void deleteArticle(Long id, ArticleDeleteRequest request) {
-        Article article = getArticle(id);
         User user = userService.getUser(request.getEmail(), request.getPassword());
+        Article article = getArticle(id);
         checkUserAccess(user, article);
         articleRepository.deleteById(id);
     }
