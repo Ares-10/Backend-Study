@@ -28,7 +28,7 @@ public class Article extends BaseEntity {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-    //==메서드==//
+    // ==메서드==//
     public void update(String title, String content) {
         this.title = title;
         this.content = content;

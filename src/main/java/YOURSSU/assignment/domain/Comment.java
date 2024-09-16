@@ -22,4 +22,9 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     private User user;
+
+    // ==메서드==//
+    public void update(String content) {
+        this.content = content;
+    }
 }
