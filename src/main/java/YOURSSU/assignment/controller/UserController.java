@@ -20,7 +20,7 @@ import lombok.RequiredArgsConstructor;
 public class UserController {
     private final UserService userService;
 
-    @Operation(summary = "회원가입", description = "비밀번호를 암호화해서 저장합니다")
+    @Operation(summary = "회원가입")
     @PostMapping("/signup")
     public ResponseEntity<UserSignUpResponse> signup(
             @Valid @RequestBody UserSignUpRequest request) {
