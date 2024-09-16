@@ -19,18 +19,17 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final UserService userService;
 
-    // Article 조회 메서드
-    private Article getArticle(Long id) {
-        return articleRepository
-                .findById(id)
-                .orElseThrow(() -> new GlobalException(GlobalErrorCode.ARTICLE_NOT_FOUND));
-    }
-
     // 유저 권한 검증 메서드
     private void checkUserAccess(User user, Article article) {
         if (!user.getId().equals(article.getUser().getId())) {
             throw new GlobalException(GlobalErrorCode.ARTICLE_ACCESS_DENIED);
         }
+    }
+
+    public Article getArticle(Long id) {
+        return articleRepository
+                .findById(id)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.ARTICLE_NOT_FOUND));
     }
 
     @Override
