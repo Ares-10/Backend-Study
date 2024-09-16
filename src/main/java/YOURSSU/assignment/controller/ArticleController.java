@@ -9,12 +9,9 @@ import org.springframework.web.bind.annotation.*;
 import YOURSSU.assignment.dto.request.ArticleRequest.ArticleCreateRequest;
 import YOURSSU.assignment.dto.request.ArticleRequest.ArticleDeleteRequest;
 import YOURSSU.assignment.dto.request.ArticleRequest.ArticleUpdateRequest;
-import YOURSSU.assignment.dto.request.CommentRequest.CommentCreateRequest;
 import YOURSSU.assignment.dto.response.ArticleResponse.ArticleCreateResponse;
 import YOURSSU.assignment.dto.response.ArticleResponse.ArticleUpdateResponse;
-import YOURSSU.assignment.dto.response.CommentResponse.CommentCreateResponse;
 import YOURSSU.assignment.service.article.ArticleService;
-import YOURSSU.assignment.service.comment.CommentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Tag(name = "Article", description = "게시글 관련 API")
 public class ArticleController {
     private final ArticleService articleService;
-    private final CommentService commentService;
 
     @Operation(summary = "게시글 작성하기")
     @PostMapping("/")
@@ -48,13 +44,5 @@ public class ArticleController {
     public void deleteArticle(
             @PathVariable Long id, @Valid @RequestBody ArticleDeleteRequest request) {
         articleService.deleteArticle(id, request);
-    }
-
-    @Operation(summary = "댓글 작성하기")
-    @PostMapping("/{articleId}/comments")
-    public ResponseEntity<CommentCreateResponse> createComment(
-            @PathVariable Long articleId, @Valid @RequestBody CommentCreateRequest request) {
-        CommentCreateResponse response = commentService.createComment(articleId, request);
-        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

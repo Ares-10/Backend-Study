@@ -15,23 +15,31 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comments")
+@RequestMapping("/api/article/{articleId}/comments")
 @Tag(name = "Comment", description = "댓글 관련 API")
 public class CommentController {
     private final CommentService commentService;
 
+    @Operation(summary = "댓글 작성하기")
+    @PostMapping("/")
+    public ResponseEntity<CommentCreateResponse> createComment(
+            @PathVariable Long articleId, @Valid @RequestBody CommentCreateRequest request) {
+        CommentCreateResponse response = commentService.createComment(articleId, request);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
     @Operation(summary = "댓글 수정하기")
-    @PutMapping("/{id}")
+    @PutMapping("/{commentId}")
     public ResponseEntity<CommentUpdateResponse> updateComment(
-            @PathVariable Long id, @Valid @RequestBody CommentUpdateRequest request) {
-        CommentUpdateResponse response = commentService.updateComment(id, request);
+            @PathVariable Long commentId, @Valid @RequestBody CommentUpdateRequest request) {
+        CommentUpdateResponse response = commentService.updateComment(commentId, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
     @Operation(summary = "댓글 삭제하기")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{commentId}")
     public void deleteComment(
-            @PathVariable Long id, @Valid @RequestBody CommentDeleteRequest request) {
-        commentService.deleteComment(id, request);
+            @PathVariable Long commentId, @Valid @RequestBody CommentDeleteRequest request) {
+        commentService.deleteComment(commentId, request);
     }
 }
