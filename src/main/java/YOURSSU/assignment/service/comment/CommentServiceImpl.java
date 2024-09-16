@@ -7,6 +7,7 @@ import YOURSSU.assignment.domain.Article;
 import YOURSSU.assignment.domain.Comment;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.CommentRequest.CommentCreateRequest;
+import YOURSSU.assignment.dto.request.CommentRequest.CommentDeleteRequest;
 import YOURSSU.assignment.dto.request.CommentRequest.CommentUpdateRequest;
 import YOURSSU.assignment.dto.response.CommentResponse.CommentCreateResponse;
 import YOURSSU.assignment.dto.response.CommentResponse.CommentUpdateResponse;
@@ -53,5 +54,13 @@ public class CommentServiceImpl implements CommentService {
         comment.update(request.getContent());
         commentRepository.save(comment);
         return CommentConverter.toCommentUpdateResponse(comment, user.getEmail());
+    }
+
+    @Override
+    public void deleteComment(Long id, CommentDeleteRequest request) {
+        User user = userService.getUser(request.getEmail(), request.getPassword());
+        Comment comment = getComment(id);
+        checkUserAccess(user, comment);
+        commentRepository.deleteById(id);
     }
 }
