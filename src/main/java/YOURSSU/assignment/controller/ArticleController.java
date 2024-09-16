@@ -6,8 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import YOURSSU.assignment.dto.request.ArticleRequest.*;
-import YOURSSU.assignment.dto.response.ArticleResponse.*;
+import YOURSSU.assignment.dto.request.ArticleRequest.ArticleCreateRequest;
+import YOURSSU.assignment.dto.request.ArticleRequest.ArticleDeleteRequest;
+import YOURSSU.assignment.dto.request.ArticleRequest.ArticleUpdateRequest;
+import YOURSSU.assignment.dto.response.ArticleResponse.ArticleCreateResponse;
+import YOURSSU.assignment.dto.response.ArticleResponse.ArticleUpdateResponse;
 import YOURSSU.assignment.service.article.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -34,5 +37,12 @@ public class ArticleController {
             @PathVariable Long id, @Valid @RequestBody ArticleUpdateRequest request) {
         ArticleUpdateResponse response = articleService.updateArticle(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @Operation(summary = "게시글 삭제하기")
+    @DeleteMapping("/{id}")
+    public void deleteArticle(
+            @PathVariable Long id, @Valid @RequestBody ArticleDeleteRequest request) {
+        articleService.deleteArticle(id, request);
     }
 }

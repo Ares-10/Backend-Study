@@ -5,10 +5,8 @@ import org.springframework.stereotype.Service;
 import YOURSSU.assignment.converter.ArticleConverter;
 import YOURSSU.assignment.domain.Article;
 import YOURSSU.assignment.domain.User;
-import YOURSSU.assignment.dto.request.ArticleRequest.ArticleCreateRequest;
-import YOURSSU.assignment.dto.request.ArticleRequest.ArticleUpdateRequest;
-import YOURSSU.assignment.dto.response.ArticleResponse.ArticleCreateResponse;
-import YOURSSU.assignment.dto.response.ArticleResponse.ArticleUpdateResponse;
+import YOURSSU.assignment.dto.request.ArticleRequest.*;
+import YOURSSU.assignment.dto.response.ArticleResponse.*;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
 import YOURSSU.assignment.repository.ArticleRepository;
@@ -21,6 +19,20 @@ public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
     private final UserService userService;
 
+    // Article 조회 메서드
+    private Article getArticle(Long id) {
+        return articleRepository
+                .findById(id)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.ARTICLE_NOT_FOUND));
+    }
+
+    // 유저 권한 검증 메서드
+    private void checkUserAccess(User user, Article article) {
+        if (!user.getId().equals(article.getUser().getId())) {
+            throw new GlobalException(GlobalErrorCode.ARTICLE_ACCESS_DENIED);
+        }
+    }
+
     @Override
     public ArticleCreateResponse createArticle(ArticleCreateRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
@@ -31,17 +43,19 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     public ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request) {
-        // 게시글이 없는 경우
-        Article article =
-                articleRepository
-                        .findById(id)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.ARTICLE_NOT_FOUND));
+        Article article = getArticle(id);
         User user = userService.getUser(request.getEmail(), request.getPassword());
-        // 유저가 게시글에 대한 권한이 없는 경우
-        if (!user.getId().equals(article.getUser().getId()))
-            throw new GlobalException(GlobalErrorCode.ARTICLE_ACCESS_DENIED);
+        checkUserAccess(user, article);
         article.update(request.getTitle(), request.getContent());
         articleRepository.save(article);
         return ArticleConverter.toArticleUpdateResponse(article, user.getEmail());
+    }
+
+    @Override
+    public void deleteArticle(Long id, ArticleDeleteRequest request) {
+        Article article = getArticle(id);
+        User user = userService.getUser(request.getEmail(), request.getPassword());
+        checkUserAccess(user, article);
+        articleRepository.deleteById(id);
     }
 }

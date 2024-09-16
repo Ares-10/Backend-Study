@@ -7,4 +7,6 @@ public interface ArticleService {
     ArticleCreateResponse createArticle(ArticleCreateRequest request);
 
     ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request);
+
+    void deleteArticle(Long id, ArticleDeleteRequest request);
 }
