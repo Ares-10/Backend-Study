@@ -51,7 +51,7 @@ public class ArticleController {
     }
 
     @Operation(summary = "댓글 작성하기")
-    @PostMapping("/{articleId}/comment")
+    @PostMapping("/{articleId}/comments")
     public ResponseEntity<CommentCreateResponse> createComment(
             @PathVariable Long articleId, @Valid @RequestBody CommentCreateRequest request) {
         CommentCreateResponse response = commentService.createComment(articleId, request);
