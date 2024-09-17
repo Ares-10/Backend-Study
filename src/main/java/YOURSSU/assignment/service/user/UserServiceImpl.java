@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import YOURSSU.assignment.converter.UserConverter;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.UserRequest.UserSignUpRequest;
-import YOURSSU.assignment.dto.request.UserRequest.UserWithdrawRequest;
 import YOURSSU.assignment.dto.response.UserResponse.UserSignUpResponse;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
@@ -58,8 +57,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional
-    public void withdraw(UserWithdrawRequest request) {
-        User user = authenticateUser(request.getEmail(), request.getPassword());
+    public void withdraw(User user) {
         userRepository.delete(user);
     }
 }

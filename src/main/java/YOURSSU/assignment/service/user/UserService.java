@@ -11,5 +11,5 @@ public interface UserService {
 
     User getUser(String email);
 
-    void withdraw(UserWithdrawRequest request);
+    void withdraw(User user);
 }
