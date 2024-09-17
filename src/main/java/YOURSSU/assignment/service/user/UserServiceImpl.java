@@ -37,18 +37,6 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User authenticateUser(String email, String password) {
-        User user =
-                userRepository
-                        .findByEmail(email)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        // 암호화된 비밀번호 매칭
-        if (!passwordEncoder.matches(password, user.getPassword()))
-            throw new GlobalException(GlobalErrorCode.EMAIL_PASSWORD_MISMATCH);
-        return user;
-    }
-
-    @Override
     public User getUser(String email) {
         return userRepository
                 .findByEmail(email)

@@ -63,7 +63,6 @@ public class SecurityConfig {
                         authorize
                                 .requestMatchers(
                                         "/error",
-                                        "/api/login",
                                         "/swagger-ui/**",
                                         "/swagger-resources/**",
                                         "/v3/api-docs/**",

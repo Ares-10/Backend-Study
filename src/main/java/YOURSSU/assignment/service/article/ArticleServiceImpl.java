@@ -12,14 +12,12 @@ import YOURSSU.assignment.dto.response.ArticleResponse.*;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
 import YOURSSU.assignment.repository.ArticleRepository;
-import YOURSSU.assignment.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
 public class ArticleServiceImpl implements ArticleService {
     private final ArticleRepository articleRepository;
-    private final UserService userService;
 
     // 유저 권한 검증 메서드
     private void checkUserAccess(User user, Article article) {
@@ -35,8 +33,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleCreateResponse createArticle(ArticleCreateRequest request) {
-        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
+    public ArticleCreateResponse createArticle(ArticleCreateRequest request, User user) {
         Article article = ArticleConverter.toArticle(request, user);
         articleRepository.save(article);
         return ArticleConverter.toArticleCreateResponse(article, user.getEmail());
@@ -44,8 +41,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request) {
-        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
+    public ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request, User user) {
         Article article = getArticle(id);
         checkUserAccess(user, article);
         article.update(request.getTitle(), request.getContent());
@@ -55,8 +51,7 @@ public class ArticleServiceImpl implements ArticleService {
 
     @Override
     @Transactional
-    public void deleteArticle(Long id, ArticleDeleteRequest request) {
-        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
+    public void deleteArticle(Long id, User user) {
         Article article = getArticle(id);
         checkUserAccess(user, article);
         articleRepository.deleteById(id);
