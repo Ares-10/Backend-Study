@@ -1,5 +1,7 @@
 package YOURSSU.assignment.service.comment;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import YOURSSU.assignment.converter.CommentConverter;
@@ -38,6 +40,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public CommentCreateResponse createComment(Long articleId, CommentCreateRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
         Article article = articleService.getArticle(articleId);
@@ -47,6 +50,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public CommentUpdateResponse updateComment(Long id, CommentUpdateRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
         Comment comment = getComment(id);
@@ -57,6 +61,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    @Transactional
     public void deleteComment(Long id, CommentDeleteRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
         Comment comment = getComment(id);

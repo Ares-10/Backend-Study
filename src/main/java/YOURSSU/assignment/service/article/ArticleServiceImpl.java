@@ -1,5 +1,7 @@
 package YOURSSU.assignment.service.article;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import YOURSSU.assignment.converter.ArticleConverter;
@@ -32,6 +34,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleCreateResponse createArticle(ArticleCreateRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
         Article article = ArticleConverter.toArticle(request, user);
@@ -40,6 +43,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
         Article article = getArticle(id);
@@ -50,6 +54,7 @@ public class ArticleServiceImpl implements ArticleService {
     }
 
     @Override
+    @Transactional
     public void deleteArticle(Long id, ArticleDeleteRequest request) {
         User user = userService.getUser(request.getEmail(), request.getPassword());
         Article article = getArticle(id);

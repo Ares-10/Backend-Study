@@ -1,5 +1,7 @@
 package YOURSSU.assignment.service.user;
 
+import jakarta.transaction.Transactional;
+
 import org.springframework.stereotype.Service;
 
 import YOURSSU.assignment.converter.UserConverter;
@@ -18,6 +20,7 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
+    @Transactional
     public UserSignUpResponse signUp(UserSignUpRequest request) {
         userRepository
                 .findByEmail(request.getEmail())
@@ -52,6 +55,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public void withdraw(UserWithdrawRequest request) {
         User user = getUser(request.getEmail(), request.getPassword());
         userRepository.delete(user);
