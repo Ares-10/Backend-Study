@@ -7,8 +7,6 @@ import YOURSSU.assignment.dto.response.UserResponse.UserSignUpResponse;
 public interface UserService {
     UserSignUpResponse signUp(UserSignUpRequest request);
 
-    User authenticateUser(String email, String password);
-
     User getUser(String email);
 
     void withdraw(User user);
