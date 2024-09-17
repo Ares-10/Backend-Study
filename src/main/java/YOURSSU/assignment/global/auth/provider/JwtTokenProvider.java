@@ -67,10 +67,16 @@ public class JwtTokenProvider {
             Date expiredDate = claims.getBody().getExpiration();
             return expiredDate.after(now);
         } catch (ExpiredJwtException e) {
+            // 토큰이 만료된 경우
             throw new GlobalException(GlobalErrorCode.AUTH_EXPIRED_TOKEN);
-        } catch (SecurityException | MalformedJwtException | IllegalArgumentException e) {
+        } catch (SecurityException
+                | SignatureException
+                | MalformedJwtException
+                | IllegalArgumentException e) {
+            // 보안 예외, 서명 오류, JWT 형식 오류, 잘못된 입력 값 (null 등)
             throw new GlobalException(GlobalErrorCode.AUTH_INVALID_TOKEN);
         } catch (UnsupportedJwtException e) {
+            // 지원되지 않는 JWT 형식
             throw new GlobalException(GlobalErrorCode.UNSUPPORTED_TOKEN);
         }
     }
