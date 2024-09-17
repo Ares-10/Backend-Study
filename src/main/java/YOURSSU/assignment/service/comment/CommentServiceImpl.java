@@ -42,7 +42,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentCreateResponse createComment(Long articleId, CommentCreateRequest request) {
-        User user = userService.getUser(request.getEmail(), request.getPassword());
+        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
         Article article = articleService.getArticle(articleId);
         Comment comment = CommentConverter.toComment(request, article, user);
         commentRepository.save(comment);
@@ -52,7 +52,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public CommentUpdateResponse updateComment(Long id, CommentUpdateRequest request) {
-        User user = userService.getUser(request.getEmail(), request.getPassword());
+        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
         Comment comment = getComment(id);
         checkUserAccess(user, comment);
         comment.update(request.getContent());
@@ -63,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     @Transactional
     public void deleteComment(Long id, CommentDeleteRequest request) {
-        User user = userService.getUser(request.getEmail(), request.getPassword());
+        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
         Comment comment = getComment(id);
         checkUserAccess(user, comment);
         commentRepository.deleteById(id);

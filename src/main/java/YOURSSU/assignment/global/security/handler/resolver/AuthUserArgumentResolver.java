@@ -48,8 +48,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         }
         UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) authentication;
-        Long userId = Long.valueOf(authenticationToken.getName());
-
-        return userService.getUser(userId);
+        String email = authenticationToken.getName();
+        return userService.getUser(email);
     }
 }

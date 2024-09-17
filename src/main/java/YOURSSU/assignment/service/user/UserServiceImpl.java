@@ -2,6 +2,7 @@ package YOURSSU.assignment.service.user;
 
 import jakarta.transaction.Transactional;
 
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import YOURSSU.assignment.converter.UserConverter;
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
     @Transactional
@@ -28,36 +30,36 @@ public class UserServiceImpl implements UserService {
                         user -> {
                             throw new GlobalException(GlobalErrorCode.USER_ALREADY_EXISTS);
                         });
-        String password = request.getPassword(); // 암호화 필요
+        // 비밀번호 암호화
+        String password = passwordEncoder.encode(request.getPassword());
         User user = UserConverter.toUser(request, password);
         userRepository.save(user);
         return UserConverter.toUserSignUpResponse(user);
     }
 
     @Override
-    public User getUser(String email, String password) {
+    public User authenticateUser(String email, String password) {
         User user =
                 userRepository
                         .findByEmail(email)
                         .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        if (!user.getPassword().equals(password))
+        // 암호화된 비밀번호 매칭
+        if (!passwordEncoder.matches(password, user.getPassword()))
             throw new GlobalException(GlobalErrorCode.EMAIL_PASSWORD_MISMATCH);
         return user;
     }
 
     @Override
-    public User getUser(Long id) {
-        User user =
-                userRepository
-                        .findById(id)
-                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
-        return user;
+    public User getUser(String email) {
+        return userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
     }
 
     @Override
     @Transactional
     public void withdraw(UserWithdrawRequest request) {
-        User user = getUser(request.getEmail(), request.getPassword());
+        User user = authenticateUser(request.getEmail(), request.getPassword());
         userRepository.delete(user);
     }
 }

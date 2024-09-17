@@ -38,17 +38,16 @@ public class JwtTokenProvider {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    public String createAccessToken(Long userId) {
-        return createToken(userId, accessTokenValidityMilliseconds);
+    public String createAccessToken(String email) {
+        return createToken(email, accessTokenValidityMilliseconds);
     }
 
-    public String createRefreshToken(Long userId) {
-        return createToken(userId, refreshTokenValidityMilliseconds);
+    public String createRefreshToken(String email) {
+        return createToken(email, refreshTokenValidityMilliseconds);
     }
 
-    public String createToken(Long userId, long validityMilliseconds) {
-        Claims claims = Jwts.claims();
-        claims.put("id", userId);
+    public String createToken(String email, long validityMilliseconds) {
+        Claims claims = Jwts.claims().setSubject(email);
 
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + validityMilliseconds);
@@ -80,7 +79,7 @@ public class JwtTokenProvider {
         return Jwts.parserBuilder().setSigningKey(getSigningKey()).build().parseClaimsJws(token);
     }
 
-    public Long getId(String token) {
-        return getClaims(token).getBody().get("id", Long.class);
+    public String getEmail(String token) {
+        return getClaims(token).getBody().getSubject();
     }
 }

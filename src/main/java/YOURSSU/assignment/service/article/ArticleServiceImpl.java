@@ -36,7 +36,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public ArticleCreateResponse createArticle(ArticleCreateRequest request) {
-        User user = userService.getUser(request.getEmail(), request.getPassword());
+        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
         Article article = ArticleConverter.toArticle(request, user);
         articleRepository.save(article);
         return ArticleConverter.toArticleCreateResponse(article, user.getEmail());
@@ -45,7 +45,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public ArticleUpdateResponse updateArticle(Long id, ArticleUpdateRequest request) {
-        User user = userService.getUser(request.getEmail(), request.getPassword());
+        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
         Article article = getArticle(id);
         checkUserAccess(user, article);
         article.update(request.getTitle(), request.getContent());
@@ -56,7 +56,7 @@ public class ArticleServiceImpl implements ArticleService {
     @Override
     @Transactional
     public void deleteArticle(Long id, ArticleDeleteRequest request) {
-        User user = userService.getUser(request.getEmail(), request.getPassword());
+        User user = userService.authenticateUser(request.getEmail(), request.getPassword());
         Article article = getArticle(id);
         checkUserAccess(user, article);
         articleRepository.deleteById(id);

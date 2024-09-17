@@ -2,6 +2,8 @@ package YOURSSU.assignment.global.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -25,6 +27,12 @@ public class SecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final AuthExceptionHandlingFilter authExceptionHandlingFilter;
+
+    @Bean
+    public AuthenticationManager authenticationManager(
+            AuthenticationConfiguration authenticationConfiguration) throws Exception {
+        return authenticationConfiguration.getAuthenticationManager();
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -59,10 +67,9 @@ public class SecurityConfig {
                                         "/swagger-ui/**",
                                         "/swagger-resources/**",
                                         "/v3/api-docs/**",
-                                        "/api/users/",
-                                        "/api/users/withdraw",
-                                        "/api/articles/*",
-                                        "/api/articles/{articleId}/comments/*")
+                                        "/api/auth/login",
+                                        "/api/auth/refresh",
+                                        "/api/users/signup")
                                 .permitAll()
                                 .anyRequest()
                                 .authenticated());
