@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security;
+package YOURSSU.assignment.global.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,10 +13,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import YOURSSU.assignment.global.security.filter.AuthExceptionHandlingFilter;
-import YOURSSU.assignment.global.security.filter.JwtAuthenticationFilter;
-import YOURSSU.assignment.global.security.handler.JwtAccessDeniedHandler;
-import YOURSSU.assignment.global.security.handler.JwtAuthenticationEntryPoint;
+import YOURSSU.assignment.global.auth.filter.AuthExceptionHandlingFilter;
+import YOURSSU.assignment.global.auth.filter.JwtAuthenticationFilter;
+import YOURSSU.assignment.global.auth.handler.JwtAccessDeniedHandler;
+import YOURSSU.assignment.global.auth.handler.JwtAuthenticationEntryPoint;
 import lombok.RequiredArgsConstructor;
 
 @Configuration

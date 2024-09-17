@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.filter;
+package YOURSSU.assignment.global.auth.filter;
 
 import java.io.IOException;
 
@@ -13,10 +13,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import YOURSSU.assignment.global.auth.principal.PrincipalDetailsService;
+import YOURSSU.assignment.global.auth.provider.JwtTokenProvider;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
-import YOURSSU.assignment.global.security.principal.PrincipalDetailsService;
-import YOURSSU.assignment.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
 @Component

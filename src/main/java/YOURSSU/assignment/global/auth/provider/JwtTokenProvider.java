@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.provider;
+package YOURSSU.assignment.global.auth.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;

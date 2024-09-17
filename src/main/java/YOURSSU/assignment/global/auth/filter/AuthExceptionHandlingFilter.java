@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.filter;
+package YOURSSU.assignment.global.auth.filter;
 
 import java.io.IOException;
 

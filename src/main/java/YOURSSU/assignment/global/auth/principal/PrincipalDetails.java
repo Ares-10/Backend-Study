@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.principal;
+package YOURSSU.assignment.global.auth.principal;
 
 import java.util.Collection;
 

@@ -13,9 +13,9 @@ import YOURSSU.assignment.dto.request.AuthRequest.LoginRequest;
 import YOURSSU.assignment.dto.request.AuthRequest.TokenRefreshRequest;
 import YOURSSU.assignment.dto.response.AuthResponse.LoginResponse;
 import YOURSSU.assignment.dto.response.AuthResponse.TokenRefreshResponse;
+import YOURSSU.assignment.global.auth.provider.JwtTokenProvider;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
-import YOURSSU.assignment.global.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
 @Service

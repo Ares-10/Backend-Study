@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.handler;
+package YOURSSU.assignment.global.auth.handler;
 
 import java.io.IOException;
 

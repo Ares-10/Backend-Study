@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.handler.resolver;
+package YOURSSU.assignment.global.auth.handler.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,9 +11,9 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 import YOURSSU.assignment.domain.User;
+import YOURSSU.assignment.global.auth.handler.annotation.AuthUser;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
-import YOURSSU.assignment.global.security.handler.annotation.AuthUser;
 import YOURSSU.assignment.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 

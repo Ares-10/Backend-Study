@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.handler.annotation;
+package YOURSSU.assignment.global.auth.handler.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

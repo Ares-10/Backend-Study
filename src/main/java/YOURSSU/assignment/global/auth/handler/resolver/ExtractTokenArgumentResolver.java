@@ -1,4 +1,4 @@
-package YOURSSU.assignment.global.security.handler.resolver;
+package YOURSSU.assignment.global.auth.handler.resolver;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
@@ -7,8 +7,8 @@ import org.springframework.web.context.request.NativeWebRequest;
 import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
-import YOURSSU.assignment.global.security.handler.annotation.ExtractToken;
-import YOURSSU.assignment.global.security.provider.JwtTokenProvider;
+import YOURSSU.assignment.global.auth.handler.annotation.ExtractToken;
+import YOURSSU.assignment.global.auth.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 
 @Component
