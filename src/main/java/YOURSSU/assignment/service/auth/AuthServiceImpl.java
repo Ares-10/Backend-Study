@@ -54,7 +54,7 @@ public class AuthServiceImpl implements AuthService {
             throw new GlobalException(GlobalErrorCode.AUTH_INVALID_TOKEN);
         }
 
-        // Refresh Token에서 사용자 ID 추출
+        // Refresh Token에서 사용자 email 추출
         String email = jwtTokenProvider.getEmail(refreshToken);
 
         // 새로운 Access Token 및 Refresh Token 생성
