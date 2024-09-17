@@ -27,7 +27,15 @@ public enum GlobalErrorCode {
     COMMENT_ACCESS_DENIED(HttpStatus.FORBIDDEN, "해당 댓글에 대한 권한이 없습니다"),
 
     // 이메일과 비밀번호가 일치하지 않는 경우
-    EMAIL_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "이메일에 대한 비밀번호가 일치하지 않습니다");
+    EMAIL_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "이메일에 대한 비밀번호가 일치하지 않습니다"),
+
+    // 인증 관련
+    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
+    AUTH_INVALID_TOKEN(HttpStatus.NOT_FOUND, "토큰이 유효하지 않습니다."),
+    INVALID_REQUEST_INFO(HttpStatus.UNAUTHORIZED, "카카오 정보 불러오기에 실패하였습니다."),
+    NOT_CONTAIN_TOKEN(HttpStatus.NOT_FOUND, "해당하는 토큰이 저장되어있지 않습니다."),
+    NOT_EQUAL_TOKEN(HttpStatus.UNAUTHORIZED, "리프레시 토큰이 다릅니다."),
+    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "지원하지 않는 토큰입니다.");
 
     private final HttpStatus httpStatus;
     private final String message;

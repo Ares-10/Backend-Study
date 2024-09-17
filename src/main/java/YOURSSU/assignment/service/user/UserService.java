@@ -9,5 +9,7 @@ public interface UserService {
 
     User getUser(String email, String password);
 
+    User getUser(Long userId);
+
     void withdraw(UserWithdrawRequest request);
 }

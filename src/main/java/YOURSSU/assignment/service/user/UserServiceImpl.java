@@ -43,6 +43,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUser(Long id) {
+        User user =
+                userRepository
+                        .findById(id)
+                        .orElseThrow(() -> new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+        return user;
+    }
+
+    @Override
     public void withdraw(UserWithdrawRequest request) {
         User user = getUser(request.getEmail(), request.getPassword());
         userRepository.delete(user);
