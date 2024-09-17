@@ -11,6 +11,7 @@ import YOURSSU.assignment.dto.request.ArticleRequest.ArticleCreateRequest;
 import YOURSSU.assignment.dto.request.ArticleRequest.ArticleUpdateRequest;
 import YOURSSU.assignment.dto.response.ArticleResponse.ArticleCreateResponse;
 import YOURSSU.assignment.dto.response.ArticleResponse.ArticleUpdateResponse;
+import YOURSSU.assignment.global.auth.handler.annotation.AuthUser;
 import YOURSSU.assignment.service.article.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -28,7 +29,7 @@ public class ArticleController {
     @PostMapping("/")
     public ResponseEntity<ArticleCreateResponse> createArticle(
             @Valid @RequestBody ArticleCreateRequest request,
-            @Parameter(name = "user", hidden = true) User user) {
+            @Parameter(name = "user", hidden = true) @AuthUser User user) {
         ArticleCreateResponse response = articleService.createArticle(request, user);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -38,7 +39,7 @@ public class ArticleController {
     public ResponseEntity<ArticleUpdateResponse> updateArticle(
             @PathVariable Long id,
             @Valid @RequestBody ArticleUpdateRequest request,
-            @Parameter(name = "user", hidden = true) User user) {
+            @Parameter(name = "user", hidden = true) @AuthUser User user) {
         ArticleUpdateResponse response = articleService.updateArticle(id, request, user);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
@@ -46,7 +47,7 @@ public class ArticleController {
     @Operation(summary = "게시글 삭제하기")
     @DeleteMapping("/{id}")
     public void deleteArticle(
-            @PathVariable Long id, @Parameter(name = "user", hidden = true) User user) {
+            @PathVariable Long id, @Parameter(name = "user", hidden = true) @AuthUser User user) {
         articleService.deleteArticle(id, user);
     }
 }
