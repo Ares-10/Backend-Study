@@ -10,4 +10,6 @@ import YOURSSU.assignment.domain.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Long> {
     Optional<User> findByEmail(String email);
+
+    boolean existsByEmailOrUsername(String email, String username);
 }

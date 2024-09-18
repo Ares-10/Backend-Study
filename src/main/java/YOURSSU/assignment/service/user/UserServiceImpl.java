@@ -23,12 +23,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserSignUpResponse signUp(UserSignUpRequest request) {
-        userRepository
-                .findByEmail(request.getEmail())
-                .ifPresent(
-                        user -> {
-                            throw new GlobalException(GlobalErrorCode.USER_ALREADY_EXISTS);
-                        });
+        if (userRepository.existsByEmailOrUsername(request.getEmail(), request.getUsername()))
+            throw new GlobalException(GlobalErrorCode.USER_ALREADY_EXISTS);
+
         // 비밀번호 암호화
         String password = passwordEncoder.encode(request.getPassword());
         User user = UserConverter.toUser(request, password);
