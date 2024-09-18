@@ -59,20 +59,16 @@ public class UserControllerTest {
 
     @Test
     public void 회원가입() throws Exception {
-
         // given
-        UserRequest.UserSignUpRequest request = new UserRequest.UserSignUpRequest();
-        request.setEmail("email@urssu.com");
-        request.setPassword("password");
-        request.setUsername("username");
-
-        // when
+        UserRequest.UserSignUpRequest request =
+                new UserRequest.UserSignUpRequest("email@urssu.com", "password", "username");
         UserResponse.UserSignUpResponse response =
                 UserResponse.UserSignUpResponse.builder()
                         .email("email@urssu.com")
                         .username("username")
                         .build();
 
+        // when
         Mockito.when(userService.signUp(any())).thenReturn(response);
 
         // then
@@ -89,12 +85,9 @@ public class UserControllerTest {
 
     @Test
     public void 회원가입_중복회원() throws Exception {
-
         // given
-        UserRequest.UserSignUpRequest request = new UserRequest.UserSignUpRequest();
-        request.setEmail("email@urssu.com");
-        request.setPassword("password");
-        request.setUsername("username");
+        UserRequest.UserSignUpRequest request =
+                new UserRequest.UserSignUpRequest("email@urssu.com", "password", "username");
 
         // when
         Mockito.when(userService.signUp(any()))
@@ -117,7 +110,6 @@ public class UserControllerTest {
 
     @Test
     public void 회원탈퇴() throws Exception {
-
         // given
         User user =
                 User.builder()
@@ -128,10 +120,8 @@ public class UserControllerTest {
 
         AuthRequest.LoginRequest loginRequest =
                 new AuthRequest.LoginRequest("email@urssu.com", "password");
-
         AuthResponse.LoginResponse loginResponse =
                 new AuthResponse.LoginResponse("email@urssu.com", "access-token", "refresh-token");
-
         Mockito.when(authService.login(any())).thenReturn(loginResponse);
         String token = authService.login(loginRequest).getAccessToken();
 
