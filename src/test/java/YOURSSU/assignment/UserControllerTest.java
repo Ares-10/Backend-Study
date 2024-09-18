@@ -1,6 +1,8 @@
 package YOURSSU.assignment;
 
 import static org.mockito.ArgumentMatchers.any;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -15,7 +17,6 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
@@ -50,8 +51,16 @@ public class UserControllerTest {
     private static final String LOCAL_DATE_TIME_PATTERN =
             "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{6}";
 
+    private User user;
+
     @BeforeEach
     public void setup() {
+        user =
+                User.builder()
+                        .email("email@urssu.com")
+                        .username("username")
+                        .password("password")
+                        .build();
         this.mockMvc =
                 MockMvcBuilders.webAppContextSetup(context)
                         .addFilter(new CharacterEncodingFilter("UTF-8", true))
@@ -75,10 +84,8 @@ public class UserControllerTest {
 
         // then
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/users/signup")
+                        post("/api/users/signup")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .characterEncoding("UTF-8")
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.email").value("email@urssu.com"))
@@ -97,10 +104,8 @@ public class UserControllerTest {
 
         // then
         mockMvc.perform(
-                        MockMvcRequestBuilders.post("/api/users/signup")
+                        post("/api/users/signup")
                                 .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON)
-                                .characterEncoding("UTF-8")
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isConflict())
                 .andExpect(
@@ -113,17 +118,11 @@ public class UserControllerTest {
     @Test
     public void 회원탈퇴() throws Exception {
         // given
-        User user =
-                User.builder()
-                        .email("email@urssu.com")
-                        .username("username")
-                        .password("password")
-                        .build();
-
         AuthRequest.LoginRequest loginRequest =
                 new AuthRequest.LoginRequest("email@urssu.com", "password");
         AuthResponse.LoginResponse loginResponse =
                 new AuthResponse.LoginResponse("email@urssu.com", "access-token", "refresh-token");
+
         Mockito.when(authService.login(any())).thenReturn(loginResponse);
         String token = authService.login(loginRequest).getAccessToken();
 
@@ -132,10 +131,32 @@ public class UserControllerTest {
 
         // then
         mockMvc.perform(
-                        MockMvcRequestBuilders.delete("/api/users/withdraw")
+                        delete("/api/users/withdraw")
                                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
-                                .contentType(MediaType.APPLICATION_JSON)
-                                .accept(MediaType.APPLICATION_JSON))
+                                .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
+    }
+
+    @Test
+    public void 회원탈퇴_사용자없음() throws Exception {
+        // given
+        String token = "access-token";
+
+        // when
+        Mockito.doThrow(new GlobalException(GlobalErrorCode.USER_NOT_FOUND))
+                .when(userService)
+                .withdraw(any(User.class));
+
+        // then
+        mockMvc.perform(
+                        delete("/api/users/withdraw")
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
+                                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(
+                        jsonPath("$.time").value(Matchers.matchesPattern(LOCAL_DATE_TIME_PATTERN)))
+                .andExpect(jsonPath("$.status").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.message").value("해당 사용자를 찾을 수 없습니다"))
+                .andExpect(jsonPath("$.requestURI").value("/api/users/withdraw"));
     }
 }
