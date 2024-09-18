@@ -31,9 +31,9 @@ public enum GlobalErrorCode {
     EMAIL_PASSWORD_MISMATCH(HttpStatus.UNAUTHORIZED, "이메일에 대한 비밀번호가 일치하지 않습니다"),
 
     // 인증 관련
-    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다."),
-    AUTH_INVALID_TOKEN(HttpStatus.NOT_FOUND, "토큰이 유효하지 않습니다."),
-    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "지원하지 않는 토큰입니다.");
+    AUTH_EXPIRED_TOKEN(HttpStatus.UNAUTHORIZED, "토큰이 만료되었습니다"),
+    AUTH_INVALID_TOKEN(HttpStatus.NOT_FOUND, "토큰이 유효하지 않습니다"),
+    UNSUPPORTED_TOKEN(HttpStatus.BAD_REQUEST, "지원하지 않는 토큰입니다");
 
     private final HttpStatus httpStatus;
     private final String message;
