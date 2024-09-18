@@ -30,6 +30,12 @@ public class CommentServiceImpl implements CommentService {
             throw new GlobalException(GlobalErrorCode.COMMENT_ACCESS_DENIED);
     }
 
+    // 게시글과 댓글이 일치하는지 확인하는 메서드
+    private void checkArticleCommentMatch(Long articleId, Comment comment) {
+        if (!comment.getArticle().getId().equals(articleId))
+            throw new GlobalException(GlobalErrorCode.COMMENT_NOT_MATCH);
+    }
+
     private Comment getComment(Long id) {
         return commentRepository
                 .findById(id)
@@ -48,8 +54,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public CommentUpdateResponse updateComment(Long id, CommentUpdateRequest request, User user) {
-        Comment comment = getComment(id);
+    public CommentUpdateResponse updateComment(
+            Long commentId, Long articleId, CommentUpdateRequest request, User user) {
+        Comment comment = getComment(commentId);
+        checkArticleCommentMatch(articleId, comment);
         checkUserAccess(user, comment);
         comment.update(request.getContent());
         commentRepository.save(comment);
@@ -58,9 +66,10 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     @Transactional
-    public void deleteComment(Long id, User user) {
-        Comment comment = getComment(id);
+    public void deleteComment(Long commentId, Long articleId, User user) {
+        Comment comment = getComment(commentId);
+        checkArticleCommentMatch(articleId, comment);
         checkUserAccess(user, comment);
-        commentRepository.deleteById(id);
+        commentRepository.deleteById(commentId);
     }
 }

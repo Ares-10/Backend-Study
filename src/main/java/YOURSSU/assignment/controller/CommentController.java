@@ -37,9 +37,11 @@ public class CommentController {
     @PutMapping("/{commentId}")
     public ResponseEntity<CommentUpdateResponse> updateComment(
             @PathVariable Long commentId,
+            @PathVariable Long articleId,
             @Valid @RequestBody CommentUpdateRequest request,
             @Parameter(name = "user", hidden = true) @AuthUser User user) {
-        CommentUpdateResponse response = commentService.updateComment(commentId, request, user);
+        CommentUpdateResponse response =
+                commentService.updateComment(commentId, articleId, request, user);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
@@ -47,7 +49,8 @@ public class CommentController {
     @DeleteMapping("/{commentId}")
     public void deleteComment(
             @PathVariable Long commentId,
+            @PathVariable Long articleId,
             @Parameter(name = "user", hidden = true) @AuthUser User user) {
-        commentService.deleteComment(commentId, user);
+        commentService.deleteComment(commentId, articleId, user);
     }
 }

@@ -9,7 +9,8 @@ import YOURSSU.assignment.dto.response.CommentResponse.CommentUpdateResponse;
 public interface CommentService {
     CommentCreateResponse createComment(Long articleId, CommentCreateRequest request, User user);
 
-    CommentUpdateResponse updateComment(Long id, CommentUpdateRequest request, User user);
+    CommentUpdateResponse updateComment(
+            Long commentId, Long articleId, CommentUpdateRequest request, User user);
 
-    void deleteComment(Long id, User user);
+    void deleteComment(Long commentId, Long articleId, User user);
 }
