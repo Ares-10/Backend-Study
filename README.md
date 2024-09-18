@@ -15,7 +15,6 @@
 <img width="311" alt="image" src="https://github.com/user-attachments/assets/409386b6-99b8-4c13-9cdd-86bb9cc849b6">
 
 ## 설치 및 실행 방법
-### 설치
 1. 레포지토리를 클론합니다.
     ```bash
     git clone https://github.com/yourusername/yourproject.git
