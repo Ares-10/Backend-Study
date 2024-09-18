@@ -29,7 +29,6 @@ import YOURSSU.assignment.dto.request.UserRequest;
 import YOURSSU.assignment.dto.response.AuthResponse;
 import YOURSSU.assignment.dto.response.UserResponse;
 import YOURSSU.assignment.global.auth.filter.JwtAuthenticationFilter;
-import YOURSSU.assignment.global.auth.handler.resolver.AuthUserArgumentResolver;
 import YOURSSU.assignment.global.auth.provider.JwtTokenProvider;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
@@ -43,7 +42,6 @@ public class UserControllerTest {
     @Autowired private WebApplicationContext context;
     @MockBean private UserService userService;
     @MockBean private AuthService authService;
-    @MockBean private AuthUserArgumentResolver authUserArgumentResolver;
     @MockBean private JwtTokenProvider jwtTokenProvider;
     @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
 
