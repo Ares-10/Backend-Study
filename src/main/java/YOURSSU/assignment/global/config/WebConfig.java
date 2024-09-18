@@ -8,14 +8,12 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import YOURSSU.assignment.global.auth.handler.resolver.AuthUserArgumentResolver;
-import YOURSSU.assignment.global.auth.handler.resolver.ExtractTokenArgumentResolver;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
 @RequiredArgsConstructor
 public class WebConfig implements WebMvcConfigurer {
     private final AuthUserArgumentResolver authUserArgumentResolver;
-    private final ExtractTokenArgumentResolver extractTokenArgumentResolver;
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
@@ -30,6 +28,5 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
         resolvers.add(authUserArgumentResolver);
-        resolvers.add(extractTokenArgumentResolver);
     }
 }
