@@ -48,7 +48,7 @@ public class UserControllerTest {
     @MockBean private JwtAuthenticationFilter jwtAuthenticationFilter;
 
     private static final String LOCAL_DATE_TIME_PATTERN =
-            "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}(\\.\\d{1,6})?";
+            "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{6}";
 
     @BeforeEach
     public void setup() {
