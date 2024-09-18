@@ -11,9 +11,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -25,7 +27,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import YOURSSU.assignment.controller.ArticleController;
 import YOURSSU.assignment.domain.User;
 import YOURSSU.assignment.dto.request.ArticleRequest;
+import YOURSSU.assignment.dto.request.AuthRequest;
 import YOURSSU.assignment.dto.response.ArticleResponse;
+import YOURSSU.assignment.dto.response.AuthResponse;
 import YOURSSU.assignment.global.auth.filter.JwtAuthenticationFilter;
 import YOURSSU.assignment.global.auth.handler.resolver.AuthUserArgumentResolver;
 import YOURSSU.assignment.global.auth.provider.JwtTokenProvider;
@@ -50,8 +54,17 @@ public class ArticleControllerTest {
 
     private User user;
 
+    private String token;
+
     @BeforeEach
     public void setup() {
+        // 테스트 토큰 생성
+        AuthRequest.LoginRequest loginRequest =
+                new AuthRequest.LoginRequest("email@urssu.com", "password");
+        AuthResponse.LoginResponse loginResponse =
+                new AuthResponse.LoginResponse("email@urssu.com", "access-token", "refresh-token");
+        Mockito.when(authService.login(any())).thenReturn(loginResponse);
+        token = authService.login(loginRequest).getAccessToken();
         user =
                 User.builder()
                         .email("email@urssu.com")
@@ -86,6 +99,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         post("/api/articles/")
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -119,6 +133,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         put("/api/articles/{id}", articleId)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -145,6 +160,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         put("/api/articles/{id}", articleId)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isNotFound())
@@ -172,6 +188,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         put("/api/articles/{id}", articleId)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isForbidden())
@@ -193,6 +210,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         delete("/api/articles/{id}", articleId)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
     }
@@ -210,6 +228,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         delete("/api/articles/{id}", articleId)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
                 .andExpect(
@@ -232,6 +251,7 @@ public class ArticleControllerTest {
         // then
         mockMvc.perform(
                         delete("/api/articles/{id}", articleId)
+                                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token)
                                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isForbidden())
                 .andExpect(

@@ -51,16 +51,18 @@ public class UserControllerTest {
     private static final String LOCAL_DATE_TIME_PATTERN =
             "\\d{4}-\\d{2}-\\d{2}T\\d{2}:\\d{2}:\\d{2}.\\d{6}";
 
-    private User user;
+    private String token;
 
     @BeforeEach
     public void setup() {
-        user =
-                User.builder()
-                        .email("email@urssu.com")
-                        .username("username")
-                        .password("password")
-                        .build();
+        // 테스트 토큰 생성
+        AuthRequest.LoginRequest loginRequest =
+                new AuthRequest.LoginRequest("email@urssu.com", "password");
+        AuthResponse.LoginResponse loginResponse =
+                new AuthResponse.LoginResponse("email@urssu.com", "access-token", "refresh-token");
+        Mockito.when(authService.login(any())).thenReturn(loginResponse);
+        token = authService.login(loginRequest).getAccessToken();
+        // mock 설정
         this.mockMvc =
                 MockMvcBuilders.webAppContextSetup(context)
                         .addFilter(new CharacterEncodingFilter("UTF-8", true))
@@ -118,13 +120,6 @@ public class UserControllerTest {
     @Test
     public void 회원탈퇴() throws Exception {
         // given
-        AuthRequest.LoginRequest loginRequest =
-                new AuthRequest.LoginRequest("email@urssu.com", "password");
-        AuthResponse.LoginResponse loginResponse =
-                new AuthResponse.LoginResponse("email@urssu.com", "access-token", "refresh-token");
-
-        Mockito.when(authService.login(any())).thenReturn(loginResponse);
-        String token = authService.login(loginRequest).getAccessToken();
 
         // when
         Mockito.doNothing().when(userService).withdraw(any(User.class));
@@ -140,7 +135,6 @@ public class UserControllerTest {
     @Test
     public void 회원탈퇴_사용자없음() throws Exception {
         // given
-        String token = "access-token";
 
         // when
         Mockito.doThrow(new GlobalException(GlobalErrorCode.USER_NOT_FOUND))
