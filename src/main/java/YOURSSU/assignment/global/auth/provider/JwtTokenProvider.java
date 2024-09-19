@@ -39,15 +39,16 @@ public class JwtTokenProvider {
     }
 
     public String createAccessToken(String email) {
-        return createToken(email, accessTokenValidityMilliseconds);
+        return createToken(email, accessTokenValidityMilliseconds, "ACCESS");
     }
 
     public String createRefreshToken(String email) {
-        return createToken(email, refreshTokenValidityMilliseconds);
+        return createToken(email, refreshTokenValidityMilliseconds, "REFRESH");
     }
 
-    public String createToken(String email, long validityMilliseconds) {
+    public String createToken(String email, long validityMilliseconds, String tokenType) {
         Claims claims = Jwts.claims().setSubject(email);
+        claims.put("type", tokenType);
 
         Date now = new Date();
         Date expiredDate = new Date(now.getTime() + validityMilliseconds);
@@ -60,12 +61,13 @@ public class JwtTokenProvider {
                 .compact();
     }
 
-    public boolean isValidToken(String token) {
+    public boolean isValidToken(String token, String type) {
         try {
             Jws<Claims> claims = getClaims(token);
             Date now = new Date();
             Date expiredDate = claims.getBody().getExpiration();
-            return expiredDate.after(now);
+            String tokenType = claims.getBody().get("type").toString();
+            return expiredDate.after(now) && tokenType.equals(type);
         } catch (ExpiredJwtException e) {
             // 토큰이 만료된 경우
             throw new GlobalException(GlobalErrorCode.AUTH_EXPIRED_TOKEN);

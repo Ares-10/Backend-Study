@@ -50,7 +50,7 @@ public class AuthServiceImpl implements AuthService {
         String refreshToken = request.getRefreshToken();
 
         // Refresh Token 검증
-        if (!jwtTokenProvider.isValidToken(refreshToken)) {
+        if (!jwtTokenProvider.isValidToken(refreshToken, "REFRESH")) {
             throw new GlobalException(GlobalErrorCode.AUTH_INVALID_TOKEN);
         }
 
