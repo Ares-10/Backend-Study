@@ -52,6 +52,6 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
         UsernamePasswordAuthenticationToken authenticationToken =
                 (UsernamePasswordAuthenticationToken) authentication;
         String email = authenticationToken.getName();
-        return userService.getUser(email);
+        return userService.getUserByEmail(email);
     }
 }

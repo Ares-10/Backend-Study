@@ -7,7 +7,7 @@ import YOURSSU.assignment.dto.response.UserResponse.UserSignUpResponse;
 public interface UserService {
     UserSignUpResponse signUp(UserSignUpRequest request);
 
-    User getUser(String email);
+    User getUserByEmail(String email);
 
     void withdraw(User user);
 }
