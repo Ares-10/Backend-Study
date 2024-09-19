@@ -100,6 +100,29 @@ public class AuthControllerTest {
     }
 
     @Test
+    public void 로그인_유저없음() throws Exception {
+        // given
+        AuthRequest.LoginRequest request =
+                new AuthRequest.LoginRequest("email@urssu.com", "wrong-password");
+
+        // when
+        when(authService.login(any(AuthRequest.LoginRequest.class)))
+                .thenThrow(new GlobalException(GlobalErrorCode.USER_NOT_FOUND));
+
+        // then
+        mockMvc.perform(
+                        post("/api/auth/login")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(objectMapper.writeValueAsString(request)))
+                .andExpect(status().isNotFound())
+                .andExpect(
+                        jsonPath("$.time").value(Matchers.matchesPattern(LOCAL_DATE_TIME_PATTERN)))
+                .andExpect(jsonPath("$.status").value("NOT_FOUND"))
+                .andExpect(jsonPath("$.message").value("해당 사용자를 찾을 수 없습니다"))
+                .andExpect(jsonPath("$.requestURI").value("/api/auth/login"));
+    }
+
+    @Test
     public void 토큰갱신() throws Exception {
         // given
         AuthRequest.TokenRefreshRequest request =
