@@ -32,3 +32,6 @@
    - {JWT_REFRESH_TOKEN_TIME}
 
 5. 프로젝트를 실행합니다.
+
+실행 오류 시 다음을 참고해주세요.  
+https://campus-coder.tistory.com/162
