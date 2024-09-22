@@ -14,6 +14,22 @@
 ## 프로젝트 구조
 <img width="311" alt="image" src="https://github.com/user-attachments/assets/409386b6-99b8-4c13-9cdd-86bb9cc849b6">
 
+## API Endpoints
+
+| 동작      | URI                                      | Method |
+| --------- | ------------------------------------------ | ------ |
+| 회원 가입 | `/api/users/signup`                      | POST   |
+| 회원 탈퇴 | `/api/users/withdraw`                   | DELETE |
+| 로그인    | `/api/auth/login`                      | POST   |
+| 토큰 리프레시 | `/api/auth/refresh`              | POST   |
+| 글 작성   | `/api/articles/`                                | POST   |
+| 글 수정   | `/api/articles/{id}`                           | PUT    |
+| 글 삭제   | `/api/articles/{id}`                           | DELETE |
+| 댓글 작성 | `/api/articles/{articleId}/comments/`           | POST   |
+| 댓글 수정 | `/api/articles/{articleId}/comments/{commentId}` | PUT    |
+| 댓글 삭제 | `/api/articles/{articleId}/comments/{commentId}` | DELETE |
+
+
 ## 설치 및 실행 방법
 1. 레포지토리를 클론합니다.
     ```bash
