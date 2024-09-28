@@ -3,7 +3,7 @@
 ## 기술 스택
 ![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white)
-![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&logo=springsecurity&logoColor=white)
+![Spring Security](https://img.shields.io/badge/Spring%20Security-6DB33F?style=for-the-badge&lohttps://github.com/Ares-10/Backend-Study/blob/main/README.mdgo=springsecurity&logoColor=white)
 ![JWT](https://img.shields.io/badge/JWT-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white)  
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=for-the-badge&logo=swagger&logoColor=white)  
@@ -12,7 +12,8 @@
 ![MockMvc](https://img.shields.io/badge/MockMvc-02569B?style=for-the-badge)
 
 ## 프로젝트 구조
-<img width="311" alt="image" src="https://github.com/user-attachments/assets/409386b6-99b8-4c13-9cdd-86bb9cc849b6">
+<img width="422" alt="image" src="https://github.com/user-attachments/assets/8053c962-922a-495b-b883-f70c6c28054b">
+
 
 ## API Endpoints
 
