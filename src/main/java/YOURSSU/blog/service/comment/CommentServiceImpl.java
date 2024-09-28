@@ -1,0 +1,74 @@
+package YOURSSU.blog.service.comment;
+
+import jakarta.transaction.Transactional;
+
+import org.springframework.stereotype.Service;
+
+import YOURSSU.blog.converter.CommentConverter;
+import YOURSSU.blog.domain.Article;
+import YOURSSU.blog.domain.Comment;
+import YOURSSU.blog.domain.User;
+import YOURSSU.blog.dto.request.CommentRequest.CommentCreateRequest;
+import YOURSSU.blog.dto.request.CommentRequest.CommentUpdateRequest;
+import YOURSSU.blog.dto.response.CommentResponse.CommentCreateResponse;
+import YOURSSU.blog.dto.response.CommentResponse.CommentUpdateResponse;
+import YOURSSU.blog.global.exception.GlobalErrorCode;
+import YOURSSU.blog.global.exception.GlobalException;
+import YOURSSU.blog.repository.CommentRepository;
+import YOURSSU.blog.service.article.ArticleService;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class CommentServiceImpl implements CommentService {
+    private final CommentRepository commentRepository;
+    private final ArticleService articleService;
+
+    // 유저 권한 검증 메서드
+    private void checkUserAccess(User user, Comment comment) {
+        if (!user.getId().equals(comment.getUser().getId()))
+            throw new GlobalException(GlobalErrorCode.COMMENT_ACCESS_DENIED);
+    }
+
+    // 게시글과 댓글이 일치하는지 확인하는 메서드
+    private void checkArticleCommentMatch(Long articleId, Comment comment) {
+        if (!comment.getArticle().getId().equals(articleId))
+            throw new GlobalException(GlobalErrorCode.COMMENT_NOT_MATCH);
+    }
+
+    private Comment getComment(Long id) {
+        return commentRepository
+                .findById(id)
+                .orElseThrow(() -> new GlobalException(GlobalErrorCode.COMMENT_NOT_FOUND));
+    }
+
+    @Override
+    @Transactional
+    public CommentCreateResponse createComment(
+            Long articleId, CommentCreateRequest request, User user) {
+        Article article = articleService.getArticle(articleId);
+        Comment comment = CommentConverter.toComment(request, article, user);
+        commentRepository.save(comment);
+        return CommentConverter.toCommentCreateResponse(comment, user.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public CommentUpdateResponse updateComment(
+            Long commentId, Long articleId, CommentUpdateRequest request, User user) {
+        Comment comment = getComment(commentId);
+        checkArticleCommentMatch(articleId, comment);
+        checkUserAccess(user, comment);
+        comment.update(request.getContent());
+        return CommentConverter.toCommentUpdateResponse(comment, user.getEmail());
+    }
+
+    @Override
+    @Transactional
+    public void deleteComment(Long commentId, Long articleId, User user) {
+        Comment comment = getComment(commentId);
+        checkArticleCommentMatch(articleId, comment);
+        checkUserAccess(user, comment);
+        commentRepository.deleteById(commentId);
+    }
+}
