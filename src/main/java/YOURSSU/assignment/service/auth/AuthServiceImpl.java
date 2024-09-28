@@ -2,7 +2,6 @@ package YOURSSU.assignment.service.auth;
 
 import jakarta.transaction.Transactional;
 
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -22,7 +21,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthServiceImpl implements AuthService {
     private final JwtTokenProvider jwtTokenProvider;
-    private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final BCryptPasswordEncoder passwordEncoder;
 

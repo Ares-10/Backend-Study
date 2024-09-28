@@ -16,9 +16,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.GlobalException;
 import YOURSSU.assignment.global.exception.response.ErrorResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class AuthExceptionHandlingFilter extends OncePerRequestFilter {
+
+    private final ObjectMapper mapper;
 
     @Override
     protected void doFilterInternal(
@@ -33,7 +37,6 @@ public class AuthExceptionHandlingFilter extends OncePerRequestFilter {
             GlobalErrorCode code = e.getGlobalErrorCode();
             ErrorResponse errorResponse = new ErrorResponse(code, request.getRequestURI());
 
-            ObjectMapper mapper = new ObjectMapper();
             mapper.writeValue(response.getOutputStream(), errorResponse);
         }
     }

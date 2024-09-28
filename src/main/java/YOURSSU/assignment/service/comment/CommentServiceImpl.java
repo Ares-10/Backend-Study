@@ -60,7 +60,6 @@ public class CommentServiceImpl implements CommentService {
         checkArticleCommentMatch(articleId, comment);
         checkUserAccess(user, comment);
         comment.update(request.getContent());
-        commentRepository.save(comment);
         return CommentConverter.toCommentUpdateResponse(comment, user.getEmail());
     }
 

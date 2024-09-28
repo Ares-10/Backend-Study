@@ -13,9 +13,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.response.ErrorResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAccessDeniedHandler implements AccessDeniedHandler {
+
+    private ObjectMapper mapper;
 
     @Override
     public void handle(
@@ -29,7 +33,6 @@ public class JwtAccessDeniedHandler implements AccessDeniedHandler {
         ErrorResponse errorResponse =
                 new ErrorResponse(GlobalErrorCode._FORBIDDEN, request.getRequestURI());
 
-        ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), errorResponse);
     }
 }

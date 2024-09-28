@@ -14,9 +14,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import YOURSSU.assignment.global.exception.response.ErrorResponse;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RestControllerAdvice(annotations = {RestController.class})
 public class ExceptionAdvice extends ResponseEntityExceptionHandler {
 
@@ -24,7 +22,6 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = {GlobalException.class})
     protected ResponseEntity<ErrorResponse> handleGlobalException(
             GlobalException e, HttpServletRequest request) {
-        //        log.error("{}: {}", e.getGlobalErrorCode(), e.getMessage());
         ErrorResponse errorResponse =
                 new ErrorResponse(e.getGlobalErrorCode(), request.getRequestURI());
         return new ResponseEntity<>(errorResponse, e.getGlobalErrorCode().getHttpStatus());
@@ -39,8 +36,8 @@ public class ExceptionAdvice extends ResponseEntityExceptionHandler {
             WebRequest request) {
         String requestURI = request.getDescription(false).substring(4);
         String message = e.getBindingResult().getFieldErrors().getFirst().getDefaultMessage();
-        //        log.error("{}: {}", HttpStatus.BAD_REQUEST, message);
-        ErrorResponse body = new ErrorResponse(HttpStatus.BAD_REQUEST.name(), message, requestURI);
-        return super.handleExceptionInternal(e, body, headers, HttpStatus.BAD_REQUEST, request);
+        ErrorResponse errorResponse =
+                new ErrorResponse(HttpStatus.BAD_REQUEST.name(), message, requestURI);
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }

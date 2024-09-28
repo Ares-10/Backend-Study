@@ -45,7 +45,6 @@ public class ArticleServiceImpl implements ArticleService {
         Article article = getArticle(id);
         checkUserAccess(user, article);
         article.update(request.getTitle(), request.getContent());
-        articleRepository.save(article);
         return ArticleConverter.toArticleUpdateResponse(article, user.getEmail());
     }
 

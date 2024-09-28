@@ -13,9 +13,14 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import YOURSSU.assignment.global.exception.GlobalErrorCode;
 import YOURSSU.assignment.global.exception.response.ErrorResponse;
+import lombok.RequiredArgsConstructor;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    private final ObjectMapper mapper;
+
     @Override
     public void commence(
             HttpServletRequest request,
@@ -28,7 +33,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         ErrorResponse errorResponse =
                 new ErrorResponse(GlobalErrorCode._FORBIDDEN, request.getRequestURI());
 
-        ObjectMapper mapper = new ObjectMapper();
         mapper.writeValue(response.getOutputStream(), errorResponse); // json 변환
     }
 }
